@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruvox - Democratizando o acesso a ferramentas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(90deg, #FF8C00, #FFD700);
+      --dark-bg: #0a0a0a;
+      --card-bg: #1a1a1a;
+      --text-primary: #fff;
+      --text-secondary: #ccc;
+      --border-color: #333;
+      --accent-color: #FF8C00;
+      --border-radius: 16px;
+      --container-width: 1165px;
+      --spacing-xs: 8px;
+      --spacing-sm: 15px;
+      --spacing-md: 24px;
+      --spacing-lg: 32px;
+      --spacing-xl: 48px;
+      --spacing-xxl: 64px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    header, section, footer {
+      padding: var(--spacing-xl) 0;
+    }
+
+    /* Cabeçalho fixo */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(10, 10, 10, 0.95);
+      padding: var(--spacing-sm) var(--spacing-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    /* Menu desktop */
+    .desktop-menu {
+      display: none;
+      align-items: center;
+      gap: var(--spacing-lg);
+    }
+
+    .desktop-menu a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 16px;
+    }
+
+    .desktop-menu a:hover {
+      color: #FFD700;
+    }
+
+    .desktop-menu a i {
+      font-size: 18px;
+    }
+
+    /* Menu mobile */
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 32px;
+      height: 24px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    
+    .menu-toggle span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: var(--text-primary);
+      border-radius: 3px;
+      transition: var(--transition);
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(10px) rotate(45deg);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-10px) rotate(-45deg);
+    }
+
+    .menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      flex-direction: column;
+      background-color: rgba(20, 20, 20, 0.98);
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+      gap: var(--spacing-sm);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .menu.active {
+      display: flex;
+      animation: fadeIn 0.4s ease-out;
+    }
+    
+    .menu a {
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: var(--transition);
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .menu a:last-child {
+      border-bottom: none;
+    }
+
+    .menu a:hover {
+      color: #FFD700;
+      transform: translateX(5px);
+    }
+
+    .menu a i {
+      font-size: 18px;
+    }
+
+    .btn-top {
+      background: var(--primary-gradient);
+      color: #000;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: inline-block;
+      text-align: center;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    }
+
+    .btn-top:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+    }
+
+    /* Hero section */
+    .hero {
+      background: linear-gradient(to bottom, #141416, #000000);
+      text-align: center;
+      margin-top: 70px;
+      padding-top: var(--spacing-xxl);
+      padding-bottom: var(--spacing-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
+      z-index: 0;
+      animation: rotate 30s linear infinite;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: var(--spacing-md);
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-md);
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--primary-gradient);
+      color: #000;
+      padding: 16px 40px;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: var(--transition);
+      margin-top: var(--spacing-md);
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3);
+      text-align: center;
+    }
+
+    .btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
+    }
+
+    /* Títulos de seção */
+    .section-title {
+      font-size: 36px;
+      margin-bottom: var(--spacing-lg);
+      text-align: center;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: var(--spacing-md) var(--spacing-sm);
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary-gradient);
+      border-radius: 2px;
+    }
+
+    /* Carrossel de logos - Alterações solicitadas */
+    .ferramentas {
+      padding-bottom: var(--spacing-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-wrapper {
+      overflow: hidden;
+      position: relative;
+      height: 100px;
+      margin: var(--spacing-lg) 0;
+    }
+
+    .carousel-wrapper::before,
+    .carousel-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 100px;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .carousel-wrapper::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--dark-bg) 0%, rgba(10, 10, 10, 0) 100%);
+    }
+
+    .carousel-wrapper::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--dark-bg) 0%, rgba(10, 10, 10, 0) 100%);
+    }
+
+    .carousel {
+      display: flex;
+      gap: 15px; /* Reduzido para aproximar as imagens */
+      width: max-content;
+      padding: 0 20px;
+    }
+
+    .carousel.auto-scroll {
+      animation: scroll-left 30s linear infinite;
+    }
+
+    .carousel.auto-scroll2 {
+      animation: scroll-right 30s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes scroll-right {
+      0% {
+        transform: translateX(-30%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+
+    .carousel img {
+      flex: 0 0 auto;
+      width: 90px;
+      height: 90px;
+      object-fit: cover; /* Alterado para preencher o quadrado */
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0; /* Removido padding para preencher todo o espaço */
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .carousel img:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Depoimentos */
+    .depoimentos {
+      background: linear-gradient(to bottom, #000, #111);
+      padding-top: var(--spacing-xl);
+      padding-bottom: var(--spacing-xl);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-md);
+    }
+
+    .testimonial {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      transition: var(--transition);
+      border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .testimonial:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(255, 140, 0, 0.2);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .testimonial img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-bottom: var(--spacing-sm);
+      border: 3px solid rgba(255, 215, 0, 0.3);
+      object-fit: cover;
+    }
+
+    .testimonial-content {
+      width: 100%;
+    }
+
+    .stars {
+      color: #ffd700;
+      font-size: 20px;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .testimonial strong {
+      display: block;
+      margin-bottom: var(--spacing-xs);
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+
+    .testimonial p {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    /* Por que escolher */
+    .why-choose {
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      background: linear-gradient(to bottom, #111, #000);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .feature {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(255, 140, 0, 0.2);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .feature i {
+      font-size: 42px;
+      margin-bottom: var(--spacing-sm);
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .feature h3 {
+      margin-bottom: var(--spacing-sm);
+      font-size: 22px;
+      color: var(--text-primary);
+    }
+
+    .feature p {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    /* Garantia */
+    #garantia {
+      background: linear-gradient(to bottom, #000, #111);
+      padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .guarantee {
+      background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-xl);
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .guarantee::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
+      z-index: 0;
+      animation: rotate 30s linear infinite;
+    }
+
+    .guarantee-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .guarantee strong {
+      display: block;
+      font-size: 26px;
+      margin-bottom: var(--spacing-md);
+      color: #FFD700;
+      font-weight: 700;
+    }
+
+    .guarantee p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Botão extra após "Por que escolher" */
+    .extra-button-section {
+      background: linear-gradient(to bottom, #111, #000);
+      padding: var(--spacing-xl) 0;
+      text-align: center;
+    }
+
+    .extra-button-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .extra-button-container .btn {
+      margin: 0 auto;
+    }
+
+    /* FAQ */
+    .faq {
+      padding: var(--spacing-xl) var(--spacing-md);
+      text-align: center;
+      background: linear-gradient(to bottom, #111, #000);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-md);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      text-align: left;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .faq-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(255, 140, 0, 0.2);
+      border-color: rgba(255, 215, 0, 0.2);
+    }
+
+    .faq-item strong {
+      display: block;
+      margin-bottom: var(--spacing-sm);
+      font-size: 18px;
+      color: #FFD700;
+      font-weight: 600;
+    }
+
+    .faq-item p {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .btn-container {
+      margin-top: var(--spacing-xl);
+      text-align: center;
+    }
+
+    /* Suporte */
+    .contact-support {
+      background: linear-gradient(to bottom, #000, #0a0a0a);
+      padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .contact-container {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-title {
+      font-size: 36px;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: var(--spacing-sm);
+      font-weight: 700;
+    }
+
+    .contact-subtitle {
+      color: #888;
+      font-size: 18px;
+      margin-bottom: var(--spacing-xl);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-md);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-md);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #333;
+      background: var(--card-bg);
+      transition: var(--transition);
+      text-decoration: none;
+      font-size: 20px;
+      text-align: left;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-button::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: 0.5s;
+    }
+
+    .contact-button:hover::after {
+      left: 100%;
+    }
+
+    .contact-button:hover {
+      background: #222;
+      border-color: rgba(255,215,0,0.5);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(255, 140, 0, 0.3);
+    }
+
+    .whatsapp { 
+      color: #25D366; 
+      background: rgba(37, 211, 102, 0.05);
+      border-color: rgba(37, 211, 102, 0.2);
+    }
+    
+    .email { 
+      color: #ffd700; 
+      background: rgba(255, 215, 0, 0.05);
+      border-color: rgba(255, 215, 0, 0.2);
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #0a0a0a;
+      border-top: 1px solid var(--border-color);
+      padding: var(--spacing-xl) var(--spacing-md);
+    }
+
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-lg);
+      text-align: center;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-rights p {
+      color: #555;
+      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-size: 20px;
+      transition: var(--transition);
+    }
+
+    .footer-social a:hover {
+      background: var(--primary-gradient);
+      color: #000;
+      transform: translateY(-5px);
+    }
+
+    /* Animações */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    /* Melhorias de texto explicativo */
+    .price-highlight {
+      font-weight: 700;
+      font-size: 1.1em;
+      padding: 0 4px;
+    }
+
+    .price-low {
+      color: #4CAF50; /* Verde */
+      text-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+    }
+
+    .price-high {
+      color: #f44336; /* Vermelho */
+      text-shadow: 0 0 8px rgba(244, 67, 54, 0.4);
+    }
+
+    .hero p {
+      line-height: 1.8;
+    }
+
+    /* Correções para menu mobile */
+    .menu .btn-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 12px 24px;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 250px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Media queries para responsividade */
+    @media (min-width: 992px) {
+      .desktop-menu {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: none;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+      
+      .section-title {
+        font-size: 32px;
+      }
+      
+      .contact-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 12px 20px;
+      }
+      
+      .hero {
+        padding-top: var(--spacing-xl);
+        padding-bottom: var(--spacing-lg);
+      }
+      
+      .hero h1 {
+        font-size: 32px;
+      }
+      
+      .hero p {
+        font-size: 16px;
+      }
+      
+      .btn {
+        padding: 14px 30px;
+        font-size: 16px;
+      }
+      
+      .section-title {
+        font-size: 28px;
+      }
+      
+      .carousel-wrapper {
+        height: 90px;
+      }
+      
+      .carousel img {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .testimonial {
+        padding: var(--spacing-md);
+      }
+      
+      .feature {
+        padding: var(--spacing-md);
+      }
+      
+      .guarantee {
+        padding: var(--spacing-lg);
+      }
+      
+      .guarantee strong {
+        font-size: 22px;
+      }
+      
+      .contact-button {
+        font-size: 18px;
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+      
+      .section-title {
+        font-size: 24px;
+      }
+      
+      .section-title::after {
+        width: 60px;
+      }
+      
+      .carousel-wrapper {
+        height: 80px;
+      }
+      
+      .carousel img {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .testimonial img {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .guarantee {
+        padding: var(--spacing-md);
+      }
+      
+      .guarantee strong {
+        font-size: 20px;
+      }
+      
+      .guarantee p {
+        font-size: 16px;
+      }
+      
+      .contact-title {
+        font-size: 28px;
+      }
+      
+      .contact-subtitle {
+        font-size: 16px;
+      }
+      
+      .contact-button {
+        font-size: 16px;
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .hero h1 {
+        font-size: 24px;
+      }
+      
+      .hero p {
+        font-size: 15px;
+      }
+      
+      .btn {
+        padding: 12px 24px;
+        font-size: 15px;
+      }
+      
+      .section-title {
+        font-size: 22px;
+      }
+      
+      .carousel img {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .contact-button {
+        font-size: 14px;
+        padding: 14px;
+      }
+    }
+  </style>
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1894583661313301');
+      fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id=1894583661313301&ev=PageView&noscript=1" />
+  </noscript>
+  <!-- End Meta Pixel Code -->
+</head>
+<body>
+  <!-- Cabeçalho fixo -->
+  <div class="top-bar">
+    <div class="logo-area">
+      <div class="logo">Ruvox</div>
+    </div>
+    
+    <!-- Menu desktop -->
+    <nav class="desktop-menu">
+      <a href="#ferramentas"><i class="fas fa-tools"></i> Ferramentas</a>
+      <a href="#depoimentos"><i class="fas fa-comment-alt"></i> Depoimentos</a>
+      <a href="#garantia"><i class="fas fa-shield-alt"></i> Garantia</a>
+      <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+      <a href="https://pay.kirvano.com/897741ba-dfc9-4d26-b48c-97c8b6efd7ee?aff=981d24e2-6d52-403f-9888-d4be9ab8f2d0" class="btn-top">Assinar agora</a>
+    </nav>
+    
+    <!-- Menu mobile -->
+    <div class="menu-toggle" id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
+    <nav class="menu" id="mobileMenu">
+      <a href="#ferramentas"><i class="fas fa-tools"></i> Ferramentas</a>
+      <a href="#depoimentos"><i class="fas fa-comment-alt"></i> Depoimentos</a>
+      <a href="#garantia"><i class="fas fa-shield-alt"></i> Garantia</a>
+      <a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+      <a href="https://pay.kirvano.com/897741ba-dfc9-4d26-b48c-97c8b6efd7ee?aff=981d24e2-6d52-403f-9888-d4be9ab8f2d0" class="btn-top">Assinar agora</a>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="fade-in">Cansado de pagar caro?</h1>
+        <p class="fade-in">Por apenas <span class="price-highlight price-low">R$59,90</span>, você desbloqueia o acesso a ferramentas e recursos que muitos pagam <span class="price-highlight price-high">R$4.000</span> para ter. Não é exagero — grandes agências e profissionais gastam fortunas para ter acesso ao que você pode conquistar hoje por um valor simbólico.</p>
+        <a href="https://pay.kirvano.com/897741ba-dfc9-4d26-b48c-97c8b6efd7ee?aff=981d24e2-6d52-403f-9888-d4be9ab8f2d0" class="btn fade-in">Quero assinar agora</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="ferramentas" class="ferramentas">
+    <div class="container">
+      <h2 class="section-title fade-in">Ferramentas Disponíveis</h2>
+      
+      <div class="carousel-wrapper">
+        <div class="carousel auto-scroll">
+          <!-- Logos das ferramentas -->
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa8LmCUqfelw5sdui5-Q4KVcPoiCHQApY6dg&s" alt="Logo 1">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDRVr9QYTxtd8eXUP34HZLoEnTNMKG1ffIAg&s" alt="Logo 2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png" alt="Logo 3">
+          <img src="https://pbs.twimg.com/profile_images/1779922733582958592/9u3qMlD8_200x200.jpg" alt="Logo 4">
+          <img src="https://play-lh.googleusercontent.com/xJTpboo-si-s3vbzZ9j4rbt4YQPLBWZ8cR_B0DADpFMYTjLF6Z3zVuYcS7Jbxn9N1Jk=w240-h480-rw" alt="Logo 5">
+          <img src="https://mms.businesswire.com/media/20240410992953/en/2094006/5/Captions_Logo.jpg?download=1" alt="Logo 6">
+          <img src="https://images.seeklogo.com/logo-png/33/1/freepik-logo-png_seeklogo-336701.png" alt="Logo 7">
+          <img src="https://spyhero.com/wp-content/uploads/2022/12/profile-150x150.png" alt="Logo 8">
+          <img src="https://media.licdn.com/dms/image/v2/D4D0BAQE9zhy7ETHd2g/company-logo_200_200/company-logo_200_200/0/1685379556850/filtrify_logo?e=2147483647&v=beta&t=eK0Zr75gvFhcyYijCnGbhY07w0ODS9sO6IIuL10KIEA" alt="Logo 9">
+          <img src="https://i0.wp.com/www.kalodata.com/blog/wp-content/uploads/2024/01/20240131-144726.jpeg?fit=800%2C800&ssl=1" alt="Logo 10">
+          <img src="https://dcdn-us.mitiendanube.com/stores/002/385/428/products/whatsapp-image-2023-04-18-at-11-31-35-521-031e9de7a24d08f42916954032164290-1024-1024.jpeg" alt="Logo 11">
+          <!-- Repetidos para animação contínua -->
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa8LmCUqfelw5sdui5-Q4KVcPoiCHQApY6dg&s" alt="Logo 1">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDRVr9QYTxtd8eXUP34HZLoEnTNMKG1ffIAg&s" alt="Logo 2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png" alt="Logo 3">
+          <img src="https://pbs.twimg.com/profile_images/1779922733582958592/9u3qMlD8_200x200.jpg" alt="Logo 4">
+          <img src="https://play-lh.googleusercontent.com/xJTpboo-si-s3vbzZ9j4rbt4YQPLBWZ8cR_B0DADpFMYTjLF6Z3zVuYcS7Jbxn9N1Jk=w240-h480-rw" alt="Logo 5">
+          <img src="https://mms.businesswire.com/media/20240410992953/en/2094006/5/Captions_Logo.jpg?download=1" alt="Logo 6">
+          <img src="https://images.seeklogo.com/logo-png/33/1/freepik-logo-png_seeklogo-336701.png" alt="Logo 7">
+          <img src="https://spyhero.com/wp-content/uploads/2022/12/profile-150x150.png" alt="Logo 8">
+          <img src="https://media.licdn.com/dms/image/v2/D4D0BAQE9zhy7ETHd2g/company-logo_200_200/company-logo_200_200/0/1685379556850/filtrify_logo?e=2147483647&v=beta&t=eK0Zr75gvFhcyYijCnGbhY07w0ODS9sO6IIuL10KIEA" alt="Logo 9">
+          <img src="https://i0.wp.com/www.kalodata.com/blog/wp-content/uploads/2024/01/20240131-144726.jpeg?fit=800%2C800&ssl=1" alt="Logo 10">
+          <img src="https://dcdn-us.mitiendanube.com/stores/002/385/428/products/whatsapp-image-2023-04-18-at-11-31-35-521-031e9de7a24d08f42916954032164290-1024-1024.jpeg" alt="Logo 11">
+        </div>
+      </div>
+      
+      <div class="carousel-wrapper">
+        <div class="carousel auto-scroll2">
+          <!-- Mais logos de ferramentas -->
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo_1-aiBoiNuttrEmb8VXC0spuQICOGuDL7Q&s" alt="Logo 12">
+          <img src="https://cdn.brandfetch.io/leonardo.ai/fallback/lettermark/theme/dark/h/256/w/256/icon?c=1bfwsmEH20zzEfSNTed" alt="Logo 13">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbCEu9SuhDfKATVtN6vZtqlT6NLfDOUGKPpg&s" alt="Logo 14">
+          <img src="https://images.seeklogo.com/logo-png/40/1/vecteezy-logo-png_seeklogo-403039.png" alt="Logo 15">
+          <img src="https://img.olx.com.br/images/31/311591148054007.jpg" alt="Logo 16">
+          <img src="https://comunidadeaordem.com.br/wp-content/uploads/2024/06/IMG-MELHORIA-CONTINUA-ORDEM-11.webp" alt="Logo 17">
+          <img src="https://static-media.hotmart.com/3fyrmWUTOGKgPk9o-FqbyiX11e4=/300x300/smart/filters:format(webp):background_color(white)/hotmart/product_pictures/cf45e8bd-1368-48a2-a5e6-12d6a70f68ac/LogotipoEditave2l.png" alt="Logo 18">
+          <img src="https://play-lh.googleusercontent.com/DApBuaqfDq5ViWM-KTv7gWFpImHr9pGRfPE5n-D9xJbvHFV4Q-KdrfrG4VPa8bNlqw" alt="Logo 19">
+          <img src="https://pbs.twimg.com/profile_images/1737470726498643968/NMiyWnag_400x400.jpg" alt="Logo 20">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuALgB2AJn_aQ43kcMwQahsy1kB8e1Y-IIMA&s" alt="Logo 21">
+          <img src="https://yt3.googleusercontent.com/Y9Z6PONvc07C7DJZxc6yoguU3Ai-enBWyzfDKOU6r2P2cDir7DmtRjUbvV6X5ljSto31JzPtvg=s900-c-k-c0x00ffffff-no-rj" alt="Logo 22" >
+          <!-- Repetidos para animação contínua -->
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo_1-aiBoiNuttrEmb8VXC0spuQICOGuDL7Q&s" alt="Logo 12">
+          <img src="https://cdn.brandfetch.io/leonardo.ai/fallback/lettermark/theme/dark/h/256/w/256/icon?c=1bfwsmEH20zzEfSNTed" alt="Logo 13">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbCEu9SuhDfKATVtN6vZtqlT6NLfDOUGKPpg&s" alt="Logo 14">
+          <img src="https://images.seeklogo.com/logo-png/40/1/vecteezy-logo-png_seeklogo-403039.png" alt="Logo 15">
+          <img src="https://img.olx.com.br/images/31/311591148054007.jpg" alt="Logo 16">
+          <img src="https://comunidadeaordem.com.br/wp-content/uploads/2024/06/IMG-MELHORIA-CONTINUA-ORDEM-11.webp" alt="Logo 17">
+          <img src="https://static-media.hotmart.com/3fyrmWUTOGKgPk9o-FqbyiX11e4=/300x300/smart/filters:format(webp):background_color(white)/hotmart/product_pictures/cf45e8bd-1368-48a2-a5e6-12d6a70f68ac/LogotipoEditave2l.png" alt="Logo 18">
+          <img src="https://play-lh.googleusercontent.com/DApBuaqfDq5ViWM-KTv7gWFpImHr9pGRfPE5n-D9xJbvHFV4Q-KdrfrG4VPa8bNlqw" alt="Logo 19">
+          <img src="https://pbs.twimg.com/profile_images/1737470726498643968/NMiyWnag_400x400.jpg" alt="Logo 20">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuALgB2AJn_aQ43kcMwQahsy1kB8e1Y-IIMA&s" alt="Logo 21">
+          <img src="https://yt3.googleusercontent.com/Y9Z6PONvc07C7DJZxc6yoguU3Ai-enBWyzfDKOU6r2P2cDir7DmtRjUbvV6X5ljSto31JzPtvg=s900-c-k-c0x00ffffff-no-rj" alt="Logo 22">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="depoimentos" class="depoimentos">
+    <div class="container">
+      <h2 class="section-title fade-in">Depoimentos</h2>
+      
+      <div class="testimonials-grid">
+        <div class="testimonial fade-in">
+          <img src="https://i.pinimg.com/originals/25/39/2b/25392bc6f4360af33b187e9b6ce16dd1.jpg" alt="João M.">
+          <div class="testimonial-content">
+            <div class="stars">★★★★★</div>
+            <strong>João M.</strong>
+            <p>"Já usei vários e até hoje esse foi o melhor que achei no mercado."</p>
+          </div>
+        </div>
+        
+        <div class="testimonial fade-in">
+          <img src="https://st4.depositphotos.com/20524830/26235/i/1600/depositphotos_262350660-stock-photo-square-landscape-ocean-coastal-cliffs.jpg" alt="Camila R.">
+          <div class="testimonial-content">
+            <div class="stars">★★★★★</div>
+            <strong>Camila R.</strong>
+            <p>"Sensacional! Economizei muito com essas ferramentas profissionais."</p>
+          </div>
+        </div>
+        
+        <div class="testimonial fade-in">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4Eu0hylwCkSUPrXhST_AYXcW-tF_X3Wv04w&s" alt="Marcos P.">
+          <div class="testimonial-content">
+            <div class="stars">★★★★★</div>
+            <strong>Marcos P.</strong>
+            <p>"Economizei mais de mil reais com isso. Muito bom e fácil de usar!"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-choose">
+    <div class="container">
+      <h2 class="section-title fade-in">Por que escolher a Ruvox?</h2>
+      
+      <div class="features">
+        <!-- Card removido: Fácil de usar -->
+        <div class="feature fade-in">
+          <i class="fas fa-headset"></i>
+          <h3>Suporte 24/7</h3>
+          <p>Acesso ao suporte de nossa equipe no Whatsapp, 24 horas por dia e 7 dias por semana.</p>
+        </div>
+        
+        <div class="feature fade-in">
+          <i class="fas fa-sync-alt"></i>
+          <h3>Atualizações Constantes</h3>
+          <p>Estamos sempre melhorando para você estar à frente da concorrência.</p>
+        </div>
+
+        <div class="feature fade-in">
+          <i class="fas fa-tag"></i>
+          <h3>Melhor Custo-Benefício</h3>
+          <p>Somos, atualmente, um dos únicos e com melhor custo benefício do mercado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Botão extra após "Por que escolher" -->
+  <section class="extra-button-section">
+    <div class="container">
+      <div class="extra-button-container">
+        <a href="https://pay.kirvano.com/897741ba-dfc9-4d26-b48c-97c8b6efd7ee?aff=981d24e2-6d52-403f-9888-d4be9ab8f2d0" class="btn fade-in">Quero assinar agora</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="garantia">
+    <div class="container">
+      <h2 class="section-title fade-in">Garantia de 7 Dias</h2>
+      
+      <div class="guarantee fade-in">
+        <div class="guarantee-content">
+          <strong>Você está seguro, fique tranquilo!</strong>
+          <p>Você tem 7 dias para testar as ferramentas com total segurança. Se não gostar, devolvemos 100% do seu dinheiro. Sem burocracia. Experimente sem medo e comprove a qualidade do nosso serviço.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <div class="container">
+      <h2 class="section-title fade-in">Perguntas Frequentes</h2>
+      
+      <div class="faq-grid">
+        <div class="faq-item fade-in">
+          <strong>Como funciona o acesso?</strong>
+          <p>Após a confirmação do pagamento, o acesso será enviado no whatsapp cadastrado na compra. Você receberá todas as instruções para começar a usar imediatamente.</p>
+        </div>
+        
+        <div class="faq-item fade-in">
+          <strong>Quais as formas de pagamento?</strong>
+          <p>As formas de pagamento são: PIX, cartão de crédito (em até 12x) e boleto bancário. Todos os pagamentos são processados com segurança.</p>
+        </div>
+        
+        <div class="faq-item fade-in">
+          <strong>Por onde é o acesso?</strong>
+          <p>Todas as ferramentas são acessadas em nosso sistema próprio de multilogin. Um único acesso para todas as plataformas.</p>
+        </div>
+      </div>
+      
+      <div class="btn-container fade-in">
+        <a href="https://pay.kirvano.com/897741ba-dfc9-4d26-b48c-97c8b6efd7ee?aff=981d24e2-6d52-403f-9888-d4be9ab8f2d0" class="btn">Quero assinar agora</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-support">
+    <div class="container">
+      <div class="contact-container">
+        <h2 class="contact-title fade-in">Suporte Direto</h2>
+        <p class="contact-subtitle fade-in">Canais prioritários para seu atendimento</p>
+        
+        <div class="contact-methods">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/553183571172" class="contact-button whatsapp fade-in" target="_blank" rel="noopener">
+            <i class="fab fa-whatsapp contact-icon"></i>
+            WhatsApp: 31 8357-1172
+          </a>
+
+          <!-- Email -->
+          <a href="mailto:contato@ruvox.com" class="contact-button email fade-in">
+            <i class="fas fa-envelope contact-icon"></i>
+            contato@ruvox.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-container">
+        <!-- Logo e slogan -->
+        <div class="footer-brand">
+          <div class="logo-area">
+            <span class="logo">Ruvox</span>
+          </div>
+          <p class="footer-rights">Democratizando o acesso a ferramentas de qualidade</p>
+        </div>
+        
+        <!-- Redes sociais -->
+        <div class="footer-social">
+          <a href="https://www.instagram.com/ruvoxbr/" target="_blank" rel="noopener">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.youtube.com/@equiperuvox" target="_blank" rel="noopener">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://www.facebook.com/ruvoxferramentas" target="_blank" rel="noopener">
+            <i class="fab fa-facebook"></i>
+          </a>
+        </div>
+
+        <!-- Direitos reservados -->
+        <div class="footer-rights">
+          <p>© 2024 Ruvox. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Menu mobile toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.classList.toggle('no-scroll');
+    });
+    
+    // Fechar o menu ao clicar em um link
+    document.querySelectorAll('.menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+      });
+    });
+    
+    // Animação de elementos ao scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.feature, .testimonial, .faq-item, .guarantee, .section-title, .contact-button, .btn-container').forEach(element => {
+      observer.observe(element);
+    });
+    
+    // Otimização de carregamento de imagens
+    document.addEventListener('DOMContentLoaded', () => {
+      const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+      
+      if ('loading' in HTMLImageElement.prototype) {
+        // O navegador suporta lazy loading nativo
+        lazyImages.forEach(img => {
+          img.src = img.dataset.src;
+        });
+      } else {
+        // Fallback para navegadores que não suportam lazy loading nativo
+        const lazyImageObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const lazyImage = entry.target;
+              lazyImage.src = lazyImage.dataset.src;
+              lazyImageObserver.unobserve(lazyImage);
+            }
+          });
+        });
+        
+        lazyImages.forEach(img => {
+          lazyImageObserver.observe(img);
+        });
+      }
+    });
+    
+    // Pixel de conversão
+    document.addEventListener("DOMContentLoaded", function() {
+      const botoes = document.querySelectorAll(".btn, .btn-top");
+      
+      botoes.forEach(botao => {
+        botao.addEventListener("click", function(e) {
+          e.preventDefault(); 
+          
+          fbq('track', 'Lead', {
+            content_name: "Ruvox Ferramentas",
+            currency: "BRL"
+          });
+          
+          setTimeout(() => {
+            window.location.href = "https://pay.kirvano.com/897741ba-dfc9-4d26-b48c-97c8b6efd7ee?aff=981d24e2-6d52-403f-9888-d4be9ab8f2d0";
+          }, 200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
